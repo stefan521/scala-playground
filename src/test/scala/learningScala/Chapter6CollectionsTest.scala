@@ -1,6 +1,8 @@
-import org.scalatest.FunSpec
+package learningScala
+
+import helper.TestCase
 import Chapter6Collections._
-import TestCase._
+import org.scalatest.FunSpec
 
 class Chapter6CollectionsTest extends FunSpec {
   it("generate first odd numbers starting with 1") {
@@ -29,11 +31,11 @@ class Chapter6CollectionsTest extends FunSpec {
   }
 
   it("take first elements of a list") {
-    assert(first(List('a', 't', 'o'), 2) == List('a', 't'))
-    assert(first(List(121, 144, 169, 196, 225), 3) == List(121, 144, 169))
-    assert(first(List("Vegetable", "Fruit"), 0) == List())
-    assert(first(List("Vegetable", "Fruit"), 4) == List("Vegetable", "Fruit"))
-    assert(first(List(3.14, 6.22, 9.5), -7) == List())
+    assert(getFirstElementsRecursive(List('a', 't', 'o'), 2) == List('a', 't'))
+    assert(getFirstElementsRecursive(List(121, 144, 169, 196, 225), 3) == List(121, 144, 169))
+    assert(getFirstElementsRecursive(List("Vegetable", "Fruit"), 0) == List())
+    assert(getFirstElementsRecursive(List("Vegetable", "Fruit"), 4) == List("Vegetable", "Fruit"))
+    assert(getFirstElementsRecursive(List(3.14, 6.22, 9.5), -7) == List())
   }
 
   it("find longest string in a list") {
@@ -59,11 +61,11 @@ class Chapter6CollectionsTest extends FunSpec {
     )
 
     it("with partition") {
-      assertTestCases(inputs, findPalindromesWithPartition)
+      TestCase.assertTestCases(inputs, findPalindromesWithPartition)
     }
 
     it("with recursion") {
-      assertTestCases(inputs, findPalindromesWithRecursion)
+      TestCase.assertTestCases(inputs, findPalindromesWithRecursion)
     }
   }
 }

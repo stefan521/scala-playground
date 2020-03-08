@@ -1,3 +1,5 @@
+package helper
+
 import org.scalatest.FunSpec
 
 object TestCase extends FunSpec {

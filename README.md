@@ -1,9 +1,9 @@
 # Scala-Exercises
 
 ## Why
-I want to get better at functional programming and I use Scala for that. These small exercises are great for that. 
+I want to get better at functional programming, and I use Scala for that. These small exercises are great for that. 
 
-This repository contains various exercises that I scraped together. While the ideas for the functions are not mine, the implementation is my own. For example, finding the palindromes in a list is what the book suggested to do as an exercise, but the code here that actually does that is my implementation.
+This repository contains various exercises that I scraped together. While the ideas for the functions are not mine, the implementation is my own. For example, finding the palindromes in a list is what the book suggested doing as an exercise, but the code here that actually does that is my implementation.
 
 ## How to run it
 I use IntelliJ as my IDE. The project is built with sbt. If you don't like IntelliJ you can probably cd into the root directory and run:
