@@ -13,13 +13,14 @@ object Chapter3ExpressionsAndConditionals {
     else "less"
   }
 
-  def convertColor(colorName: String): String = {
-    require(Set("magenta", "cyan", "yellow").contains(colorName))
-    colorName match {
-      case "magenta" => "#FF00FF"
-      case "cyan" => "#00FFFF"
-      case "yellow" => "#FFFF00"
-    }
+  def convertColor(colorName: String): Option[String] = {
+    val colours = Map[String, String](
+      "magenta" -> "#FF00FF",
+      "cyan" -> "#00FFFF",
+      "yellow" -> "#FFFF00"
+    )
+
+    colours.get(colorName)
   }
 
   def printToHundred(): Unit = {

@@ -1,45 +1,50 @@
 package learningScala
 
 import Chapter3ExpressionsAndConditionals._
-import org.scalatest.FunSpec
+import org.scalatest.{Matchers, WordSpec}
 
-class Chapter3ExpressionsAndConditionalsTest extends FunSpec {
-  describe("checks names exist") {
-    it("approves names") {
-      assert(checkName("Peter") == "Peter")
-      assert(checkName("Maria") == "Maria")
-      assert(checkName("Gibberish") == "Gibberish")
+class Chapter3ExpressionsAndConditionalsTest extends WordSpec with Matchers {
+  "checkName" should {
+    "approve valid names" in {
+      checkName("Peter") shouldBe "Peter"
+      checkName("Maria") shouldBe "Maria"
+      checkName("Gibberish") shouldBe "Gibberish"
     }
 
-    it("rejects empty and null names") {
-      assert(checkName(null) == "n/a")
-      assert(checkName("") == "n/a")
-    }
-  }
-
-  describe("compares with zero") {
-    it("returns 'greater' for positive numbers") {
-      assert(compareWithZero(111.512) == "greater")
-      assert(compareWithZero(0.21) == "greater")
-      assert(compareWithZero(55) == "greater")
-    }
-
-    it("returns 'less' for negative numbers") {
-      assert(compareWithZero(-0.0002) == "less")
-      assert(compareWithZero(-1030.921) == "less")
-      assert(compareWithZero(-218421) == "less")
-    }
-
-    it("returns 'same' for 0") {
-      assert(compareWithZero(0) == "same")
-      assert(compareWithZero(0.0) == "same")
+    "rejects empty and null names" in {
+      checkName(null) shouldBe "n/a"
+      checkName("") shouldBe "n/a"
     }
   }
 
-  it("checks colors") {
-    assert(convertColor("cyan") == "#00FFFF")
-    assert(convertColor("magenta") == "#FF00FF")
-    assert(convertColor("yellow") == "#FFFF00")
-    assertThrows[IllegalArgumentException](convertColor("notAColor"))
+  "compareWithZero" should {
+    "return 'greater' for positive numbers" in {
+      compareWithZero(111.512) shouldBe "greater"
+      compareWithZero(0.21) shouldBe "greater"
+      compareWithZero(55) shouldBe "greater"
+    }
+
+    "return 'less' for negative numbers" in {
+      compareWithZero(-0.0002) shouldBe "less"
+      compareWithZero(-1030.921) shouldBe "less"
+      compareWithZero(-218421) shouldBe "less"
+    }
+
+    "return 'same' for 0" in {
+      compareWithZero(0) shouldBe "same"
+      compareWithZero(0.0) shouldBe "same"
+    }
+  }
+
+  "convertColor" should {
+    "produce hex value of known colours" in {
+      convertColor("cyan") shouldBe Some("#00FFFF")
+      convertColor("magenta") shouldBe Some("#FF00FF")
+      convertColor("yellow") shouldBe Some("#FFFF00")
+    }
+
+    "produce None for unknown colours" in {
+      convertColor("never-heard-of-it") shouldBe None
+    }
   }
 }
