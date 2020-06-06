@@ -5,16 +5,12 @@ object Chapter4Functions {
     scala.math.Pi * radius * radius
   }
 
-  def parseComputeCircleArea(radius: String): Double = {
-    val default = 0.0
-
-    radius match {
-      case null => default
-      case _ => try {
-          computeCircleArea(radius.toDouble)
-        } catch {
-          case e: NumberFormatException => default
-        }
+  def parseComputeCircleArea(radius: String, computeArea: Double => Double): Option[Double] = radius match {
+    case null => None
+    case _ => try {
+      Some(computeArea(radius.toDouble))
+    } catch {
+      case _: NumberFormatException => None
     }
   }
 

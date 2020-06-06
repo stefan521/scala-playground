@@ -3,9 +3,9 @@ package learningScala
 object Chapter5FirstClassFunctions {
   def maxInt: (Int, Int) => Int = (lhs: Int, rhs: Int) => if(lhs > rhs) lhs else rhs
 
-  def compareInts(ints: (Int, Int, Int), f: (Int, Int) => Int): Int = {
-    val fromFirstTwo = f(ints._1, ints._2)
-    f(fromFirstTwo, ints._3)
+  def compareInts(ints: (Int, Int, Int), comparisonFn: (Int, Int) => Int): Int = {
+    val fromFirstTwo = comparisonFn(ints._1, ints._2)
+    comparisonFn(fromFirstTwo, ints._3)
   }
 
   def applyToRandoms(f: (Int, Int) => Int): Int = {
