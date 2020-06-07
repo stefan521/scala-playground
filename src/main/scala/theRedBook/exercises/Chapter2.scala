@@ -40,4 +40,41 @@ object Chapter2 extends App {
     if (arr.size < 2) true
     else checkSorted(arr.head, arr.tail)
   }
+
+  /**
+   *
+   * @param f the function to be curried
+   * @tparam A type of the first argument of f
+   * @tparam B type of the second argument of f
+   * @tparam C return type of f
+   * @return the curried function f
+   */
+  def curry[A, B, C](f: (A, B) => C): A => B => C = {
+    a: A => b: B => f(a, b)
+  }
+
+  /**
+   *
+   * @param f the function to be uncurried
+   * @tparam A type of the first argument of f
+   * @tparam B type of the second argument of f
+   * @tparam C return type of f
+   * @return the uncurried function f
+   */
+  def uncurry[A, B, C](f: A => B => C): (A, B) => C = {
+    (a: A, b: B) => f(a)(b)
+  }
+
+  /**
+   *
+   * @param g The function to be applied first
+   * @param f The function to be applied second
+   * @tparam A Type of argument of g
+   * @tparam B Type of argument of f
+   * @tparam C return type of f
+   * @return The result of applying g and then f on an argument of type A
+   */
+  def compose[A, B, C](g: A => B, f: B => C): A => C = {
+    a: A => f(g(a))
+  }
 }

@@ -16,7 +16,7 @@ class Chapter2Test extends WordSpec with Matchers {
       findNthFibonacci(4) shouldBe Some(8)
     }
 
-    "not overflow for big numbers that can't be stored in ints or floats" in {
+    "not overflow for big numbers" in {
       def toSomeFib(fibAsString: String): Option[BigInt] = {
         Some(new BigInt(new BigInteger(fibAsString)))
       }
@@ -51,6 +51,46 @@ class Chapter2Test extends WordSpec with Matchers {
       isSorted[String](List("abc", "b", "cb"), isFirstShorter) shouldBe false
       isSorted[String](List("abc", "b", "cb"), isFirstLexicographicallyLess) shouldBe true
       isSorted[String](List(), isFirstLexicographicallyLess) shouldBe true
+    }
+  }
+
+  "curry" should {
+    def multiply(x: Int, y: Int): Int = x * y
+
+    "allow me to partially apply functions" in {
+      val curriedMultiply = curry(multiply)
+
+      val times3 = curriedMultiply(3)
+
+      times3(5) shouldBe 15
+      times3(8) shouldBe 24
+      times3(-27) shouldBe -81
+    }
+  }
+
+  "uncurry" should {
+    def multiply(x: Int)(y: Int): Int = x * y
+
+    "allow me to apply a function with a single parameter list" in {
+      val uncurriedMultiply = uncurry(multiply)
+
+      uncurriedMultiply(3, 5) shouldBe 15
+      uncurriedMultiply(3, 8) shouldBe 24
+      uncurriedMultiply(3, -27) shouldBe -81
+    }
+  }
+
+  "compose" should {
+    def isOdd(n : Int): Boolean = math.abs(n % 2) == 1
+    def formatOddCheck(isOdd: Boolean): String = s"the odd check is $isOdd"
+
+    "tell if a number is odd using two functions (one for checking. one for formatting the result as string)" in {
+      val composedOddCheck = Chapter2.compose(isOdd, formatOddCheck)
+
+      composedOddCheck(2) shouldBe "the odd check is false"
+      composedOddCheck(-3) shouldBe "the odd check is true"
+      composedOddCheck(9) shouldBe "the odd check is true"
+      composedOddCheck(12) shouldBe "the odd check is false"
     }
   }
 }
