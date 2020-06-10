@@ -182,4 +182,17 @@ object Chapter3 {
 
     findMaxDepth(tree, currentDepth= 0, maxDepth= 0, List.empty)
   }
+
+  // would be great to make this tail recursive so it doesn't hit a Stack Overflow
+  def mapTree[A, B](tree: Tree[A])(f: A => B): Tree[B] = {
+    def mapTree(t: Tree[A]): Tree[B] = t match {
+      case leaf: Leaf[A] =>
+        Leaf(f(leaf.value))
+
+      case branch: Branch[A] =>
+        Branch(mapTree(branch.left), mapTree(branch.right))
+    }
+
+    mapTree(tree)
+  }
 }

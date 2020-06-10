@@ -121,4 +121,12 @@ class Chapter3Test extends WordSpec with Matchers {
       depth[Int](biggerTree) shouldBe 4
     }
   }
+
+  "map" should {
+    "transform the leaves of a tree" in {
+      mapTree(leafTree)(num => num + 105) shouldBe Leaf(110)
+
+      mapTree(simpleTree)(a => a.toString + "-leaf") shouldBe Branch(Leaf("1-leaf"), Leaf("21-leaf"))
+    }
+  }
 }
