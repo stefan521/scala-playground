@@ -1,5 +1,7 @@
 package theRedBook.exercises
 
+import scala.math.max
+
 object Chapter3 {
   def tail[A](lst: List[A]): List[A] = lst match {
     case Nil => Nil
@@ -96,4 +98,88 @@ object Chapter3 {
     })
   }
 
+  def flatMap[A, B](as: List[A])(f: A => List[B]): List[B] = {
+    val mappedList = map(as)(f)
+
+    flattenList(mappedList)
+  }
+
+  def filterWithFlatMap[A](as: List[A])(f: A => Boolean): List[A] = {
+    flatMap(as)(element => if (f(element)) List(element) else Nil)
+  }
+
+  def addListElementsTogether(list1: List[Int], list2: List[Int]): List[Int] = {
+    @scala.annotation.tailrec
+    def combine(lhs: List[Int], rhs: List[Int], resultingList: List[Int]): List[Int] = (lhs, rhs) match {
+      case (Nil, _) =>
+        appendListWithFold(resultingList.reverse, rhs)
+      case (_, Nil) =>
+        appendListWithFold(resultingList.reverse, lhs)
+      case (x::xs, y::ys) =>
+        combine(xs, ys, (x + y)::resultingList)
+    }
+
+    combine(list1, list2, Nil)
+  }
+
+  // generalization of the function above
+  def zipListsWith[A, B, C](list1: List[A], list2: List[B])(f: (A, B) => C): List[Any] = {
+    @scala.annotation.tailrec
+    def combine(lhs: List[A], rhs: List[B], resultingList: List[C]): List[Any] = (lhs, rhs) match {
+      case (Nil, _) =>
+        appendListWithFold(resultingList.reverse, rhs)
+      case (_, Nil) =>
+        appendListWithFold(resultingList.reverse, lhs)
+      case (x::xs, y::ys) =>
+        combine(xs, ys, f(x, y)::resultingList)
+    }
+
+    combine(list1, list2, Nil)
+  }
+
+  sealed trait Tree[+A]
+  case class Leaf[A](value: A) extends Tree[A]
+  case class Branch[A](left: Tree[A], right: Tree[A]) extends Tree[A]
+
+  def treeSize[A](tree: Tree[A]): Int = {
+    @scala.annotation.tailrec
+    def countNodes(tree: Tree[A], count: Int, branchesToExplore: List[Tree[A]]): Int = tree match {
+      case _: Leaf[A]  =>
+        if (branchesToExplore.isEmpty) count + 1
+        else countNodes(branchesToExplore.head, count + 1, branchesToExplore.tail)
+
+      case branch: Branch[A] =>
+        countNodes(branch.left, count + 1, branch.right::branchesToExplore)
+    }
+
+    countNodes(tree, count= 0, List.empty)
+  }
+
+  def maximumElement(tree: Tree[Int]): Int = {
+    @scala.annotation.tailrec
+    def findMax(tree: Tree[Int], maximum: Int, branchesToExplore: List[Tree[Int]]): Int = tree match {
+      case leaf: Leaf[Int]  =>
+        val newMax = max(leaf.value, maximum)
+
+        if (branchesToExplore.isEmpty) newMax
+        else findMax(branchesToExplore.head, newMax, branchesToExplore.tail)
+
+      case branch: Branch[Int] =>
+          findMax(branch.left, maximum, branch.right::branchesToExplore)
+    }
+
+    findMax(tree, Int.MinValue, List.empty)
+  }
+
+  def depth[A](tree: Tree[A]): Int = {
+    @scala.annotation.tailrec
+    def findMaxDepth(t: Tree[A], currentDepth: Int, maxDepth: Int, branchesToExplore: List[Tree[A]]): Int = t match {
+      case _: Leaf[A] =>
+        max(currentDepth + 1, maxDepth)
+      case branch: Branch[A] =>
+        findMaxDepth(branch.left, currentDepth + 1, maxDepth, branch.right::branchesToExplore)
+    }
+
+    findMaxDepth(tree, currentDepth= 0, maxDepth= 0, List.empty)
+  }
 }
