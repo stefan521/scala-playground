@@ -2,7 +2,7 @@ package theRedBook.exercises
 
 import scala.math.max
 
-object Chapter3 {
+object Chapter3FunctionalDataStructures {
   def tail[A](lst: List[A]): List[A] = lst match {
     case Nil => Nil
     case _::xs => xs

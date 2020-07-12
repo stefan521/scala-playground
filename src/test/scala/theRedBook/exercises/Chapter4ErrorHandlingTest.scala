@@ -1,9 +1,9 @@
 package theRedBook.exercises
 
 import org.scalatest.{FunSpec, Matchers}
-import Chapter4._
+import Chapter4ErrorHandling._
 
-class Chapter4Test extends FunSpec with Matchers {
+class Chapter4ErrorHandlingTest extends FunSpec with Matchers {
   describe("Option") {
     describe("when None") {
       it("map should return None") {

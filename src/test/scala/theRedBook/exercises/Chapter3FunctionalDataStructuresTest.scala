@@ -1,9 +1,9 @@
 package theRedBook.exercises
 
 import org.scalatest.{Matchers, WordSpec}
-import Chapter3._
+import Chapter3FunctionalDataStructures._
 
-object Chapter3Test {
+object Chapter3FunctionalDataStructuresTest {
   val leafTree: Tree[Int] = Leaf(5)
 
   val simpleTree: Tree[Int] = Branch(
@@ -28,8 +28,8 @@ object Chapter3Test {
     )
   )
 }
-class Chapter3Test extends WordSpec with Matchers {
-  import Chapter3Test._
+class Chapter3FunctionalDataStructuresTest extends WordSpec with Matchers {
+  import Chapter3FunctionalDataStructuresTest._
 
   "appendListWithFold" should {
     "append two empty lists" in {

@@ -2,7 +2,7 @@ package theRedBook.exercises
 
 import scala.annotation.tailrec
 
-object Chapter4 extends App {
+object Chapter4ErrorHandling extends App {
 
   object MyOption {
     def map2[A, B, C] (a: MyOption[A], b: MyOption[B])(f: (A, B) => C): MyOption[C] =
@@ -18,14 +18,14 @@ object Chapter4 extends App {
     def traverse[A, B](a: List[A])(f: A => MyOption[B]): MyOption[List[B]] = {
       @scala.annotation.tailrec
       def combineOptions(optionList: List[A], combined: List[B]): MyOption[List[B]] = optionList match {
-        case List.empty =>
+        case Nil =>
           MySome(combined)
 
         case x::xs =>
           val transformed = f(x)
 
           if (transformed.isDefined)
-            combineOptions(xs, transformed::combined)
+            combineOptions(xs, transformed.get::combined)
           else
             MyNone
       }
@@ -97,15 +97,15 @@ object Chapter4 extends App {
     def traverse[E, A, B] (as: List[A])(f: A => Either[E, B]): Either[E, List[B]] = {
       @tailrec
       def go(lst: List[A], result: List[B]): Either[E, List[B]] = lst match {
-        case List.empty =>
+        case Nil =>
           Right(result)
 
         case x::xs =>
           val tryNext = f(x)
 
           tryNext match {
-            case Right(_) =>
-              go(xs, tryNext :: result)
+            case Right(value) =>
+              go(xs, value::result)
 
             case Left(err) =>
               Left(err)

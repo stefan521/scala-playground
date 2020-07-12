@@ -1,4 +1,4 @@
-package learningScala
+package learningScalaOReilley
 
 object Chapter2WorkingWithData {
   def payMeBack(amount: Double): String = {

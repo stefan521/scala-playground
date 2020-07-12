@@ -1,6 +1,6 @@
 package theRedBook.exercises
 
-object Chapter2 extends App {
+object Chapter2IntroToFP extends App {
   /**
    *
    * @param n The position in the Fibonacci sequence 0-based.

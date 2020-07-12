@@ -1,4 +1,4 @@
-package learningScala
+package learningScalaOReilley
 
 object Chapter6Collections {
   def generateFirstOdds(oddCount: Int): List[Int] = {

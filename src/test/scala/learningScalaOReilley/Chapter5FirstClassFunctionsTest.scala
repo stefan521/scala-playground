@@ -1,4 +1,4 @@
-package learningScala
+package learningScalaOReilley
 
 import Chapter5FirstClassFunctions._
 import org.scalatest.{Matchers, WordSpec}

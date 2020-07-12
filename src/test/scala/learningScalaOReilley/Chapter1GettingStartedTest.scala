@@ -1,4 +1,4 @@
-package learningScala
+package learningScalaOReilley
 import Chapter1GettingStarted._
 import org.scalactic.{Equality, TolerantNumerics}
 import org.scalatest.{FlatSpec, Matchers}
