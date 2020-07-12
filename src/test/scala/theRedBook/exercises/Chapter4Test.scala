@@ -30,6 +30,10 @@ class Chapter4Test extends FunSpec with Matchers {
         MyNone.filter(_ => true) shouldBe MyNone
         MyNone.filter(_ => false) shouldBe MyNone
       }
+
+      it("isDefined should be false") {
+        MyNone.isDefined shouldBe false
+      }
     }
 
     describe("when Some") {
@@ -55,6 +59,13 @@ class Chapter4Test extends FunSpec with Matchers {
       it("filter should keep the Some(s) that pass the filter") {
         MySome(10) filter (n => n < 6) shouldBe MyNone
         MySome(10) filter (n => n > 6) shouldBe MySome(10)
+      }
+
+      it("isDefined should be true") {
+        MySome(true).isDefined shouldBe true
+        MySome(false).isDefined shouldBe true
+        MySome(9521).isDefined shouldBe true
+        MySome(new RuntimeException).isDefined shouldBe true
       }
     }
   }
