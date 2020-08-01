@@ -55,4 +55,84 @@ class Chapter10Monoids extends App {
 
     override def zero: A => A = identity[A]
   }
+
+  def concatenate[A](as: List[A], m: Monoid[A]): A =
+    as.foldLeft(m.zero)(m.op)
+
+  def foldMap[A, B](as: List[A], m: Monoid[B])(f: A => B): B =
+    concatenate(as.map(f), m)
+
+  def foldLeftWithFoldMap[A](as: List[A], m: Monoid[A]): A =
+    foldMap[A, A](as, m)(identity)
+
+  def foldRightWithFoldMap[A](as: List[A], m: Monoid[A]): A =
+    foldMap[A, A](as.reverse, m)(identity)
+
+  def foldMapV[A,B](v: IndexedSeq[A], m: Monoid[B])(f: A => B): B = {
+    def go(toProcess: IndexedSeq[A]): B = {
+      toProcess match {
+        case IndexedSeq.empty =>
+          m.zero
+
+        case IndexedSeq(x) =>
+          f(x)
+
+        case seq =>
+          val (left, right) = seq.splitAt(seq.length / 2)
+          val processedLeft = go(left)
+          val processedRight = go(right)
+          m.op(processedLeft, processedRight)  // is not tail-recursive... :(  YET
+      }
+    }
+
+    go(v)
+  }
+
+  object FunnyWayToCheckOrdering {
+    type IntAndIndex = (Int, Int)
+
+    val orderingMonoid: Monoid[IntAndIndex] = new Monoid[IntAndIndex] {
+      override def op(a: IntAndIndex, b: IntAndIndex): IntAndIndex = if (a._1 < b._1) a else b
+
+      override def zero: IntAndIndex = (Int.MaxValue, Int.MinValue)
+    }
+
+    def isOrderedWithFoldMap(v: IndexedSeq[Int]): Boolean = {
+      val minIndex = foldMap(v.toList.zipWithIndex, orderingMonoid)(identity)
+
+      v.isEmpty || minIndex._2 == 0
+    }
+  }
+
+  object WordCountingInChunks {
+    sealed trait WC
+    case class Stub(chars: String) extends WC
+    case class Part(lStub: String, words: Int, rStub: String) extends WC
+
+    def countWordsInStr(str: String): Int = str.split("").length
+
+    val wcMonoid: Monoid[WC] = new Monoid[WC] {
+      private def combineStubAndPart(stub: Stub, part: Part): Part = {
+        val totalWords = countWordsInStr(stub.chars) + part.words
+        Part(part.lStub, totalWords, part.rStub)
+      }
+
+      override def op(a: WC, b: WC): WC = (a, b) match {
+        case (aStub: Stub, bStub: Stub) =>
+          Part(aStub.chars, 0, bStub.chars)
+
+        case (stub: Stub, part: Part) =>
+          combineStubAndPart(stub, part)
+
+        case (part: Part, stub: Stub,) =>
+          combineStubAndPart(stub, part)
+
+        case (Part(lStubA, wordsA, rStubA), Part(lStubB, wordsB, rStubB)) =>
+          val totalWords = countWordsInStr(rStubA) + countWordsInStr(lStubB) + wordsA + wordsB
+          Part(lStubA, totalWords, rStubB)
+      }
+
+      override def zero: WC = Stub("")
+    }
+  }
 }
