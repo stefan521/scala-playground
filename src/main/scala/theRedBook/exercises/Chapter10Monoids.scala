@@ -124,7 +124,7 @@ class Chapter10Monoids extends App {
         case (stub: Stub, part: Part) =>
           combineStubAndPart(stub, part)
 
-        case (part: Part, stub: Stub,) =>
+        case (part: Part, stub: Stub) =>
           combineStubAndPart(stub, part)
 
         case (Part(lStubA, wordsA, rStubA), Part(lStubB, wordsB, rStubB)) =>
