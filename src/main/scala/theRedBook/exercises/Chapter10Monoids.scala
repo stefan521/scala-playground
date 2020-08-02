@@ -1,6 +1,8 @@
 package theRedBook.exercises
 
-class Chapter10Monoids extends App {
+import scala.annotation.tailrec
+
+object Chapter10Monoids extends App {
   trait Monoid[A] {
     def  op(a: A, b: A): A // must be associative (parens don't matter)
     def zero: A // op(zero, a) must always give a same for op(a, zero)
@@ -71,7 +73,7 @@ class Chapter10Monoids extends App {
   def foldMapV[A,B](v: IndexedSeq[A], m: Monoid[B])(f: A => B): B = {
     def go(toProcess: IndexedSeq[A]): B = {
       toProcess match {
-        case IndexedSeq.empty =>
+        case x if x.isEmpty =>
           m.zero
 
         case IndexedSeq(x) =>
@@ -112,23 +114,19 @@ class Chapter10Monoids extends App {
     def countWordsInStr(str: String): Int = str.split("").length
 
     val wcMonoid: Monoid[WC] = new Monoid[WC] {
-      private def combineStubAndPart(stub: Stub, part: Part): Part = {
-        val totalWords = countWordsInStr(stub.chars) + part.words
-        Part(part.lStub, totalWords, part.rStub)
-      }
-
       override def op(a: WC, b: WC): WC = (a, b) match {
         case (aStub: Stub, bStub: Stub) =>
-          Part(aStub.chars, 0, bStub.chars)
+          Stub(aStub.chars + bStub.chars)
 
         case (stub: Stub, part: Part) =>
-          combineStubAndPart(stub, part)
+          Part(stub.chars + part.lStub, part.words, part.rStub)
 
         case (part: Part, stub: Stub) =>
-          combineStubAndPart(stub, part)
+          Part(part.lStub, part.words, part.rStub + stub.chars)
 
         case (Part(lStubA, wordsA, rStubA), Part(lStubB, wordsB, rStubB)) =>
-          val totalWords = countWordsInStr(rStubA) + countWordsInStr(lStubB) + wordsA + wordsB
+          val countedWords = wordsA + wordsB
+          val totalWords = if ((rStubA + lStubB).isBlank) countedWords else countedWords + 1
           Part(lStubA, totalWords, rStubB)
       }
 
