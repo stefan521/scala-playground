@@ -126,7 +126,7 @@ object Chapter10Monoids extends App {
 
         case (Part(lStubA, wordsA, rStubA), Part(lStubB, wordsB, rStubB)) =>
           val countedWords = wordsA + wordsB
-          val totalWords = if ((rStubA + lStubB).isBlank) countedWords else countedWords + 1
+          val totalWords = if ((rStubA + lStubB).isEmpty) countedWords else countedWords + 1
           Part(lStubA, totalWords, rStubB)
       }
 
