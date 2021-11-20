@@ -1,4 +1,4 @@
-package theRedBook.exercises
+package reedbook.exercises
 
 object Chapter2IntroToFP extends App {
   /**

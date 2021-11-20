@@ -1,4 +1,4 @@
-package learningScalaOReilley
+package learningscala
 
 object Chapter3ExpressionsAndConditionals {
   def checkName(name: String): String = name match {

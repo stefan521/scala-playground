@@ -1,4 +1,4 @@
-package theRedBook.exercises
+package reedbook.exercises
 
 import org.scalatest.{FunSpec, Matchers}
 import Chapter4ErrorHandling._

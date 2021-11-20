@@ -1,4 +1,4 @@
-package theRedBook.exercises
+package reedbook.exercises
 
 import org.scalatest.{Matchers, WordSpec}
 import Chapter3FunctionalDataStructures._

@@ -1,4 +1,4 @@
-package learningScalaOReilley
+package learningscala
 
 object Chapter1GettingStarted {
   def convertCelsiusToFahrenheit(degrees: Double): Double =  degrees * 9 / 5 + 32

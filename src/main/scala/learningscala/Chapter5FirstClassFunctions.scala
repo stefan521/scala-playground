@@ -1,4 +1,4 @@
-package learningScalaOReilley
+package learningscala
 
 object Chapter5FirstClassFunctions {
   def maxInt: (Int, Int) => Int = (lhs: Int, rhs: Int) => if(lhs > rhs) lhs else rhs

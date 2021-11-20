@@ -1,4 +1,4 @@
-package learningScalaOReilley
+package learningscala
 
 object Chapter4Functions {
   def computeCircleArea(radius: Double): Double = {

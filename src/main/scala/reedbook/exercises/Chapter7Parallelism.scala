@@ -1,4 +1,4 @@
-package theRedBook.exercises
+package reedbook.exercises
 
 import scala.concurrent.duration.TimeUnit
 import java.util.concurrent._

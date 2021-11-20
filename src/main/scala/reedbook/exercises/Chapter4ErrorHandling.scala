@@ -1,4 +1,4 @@
-package theRedBook.exercises
+package reedbook.exercises
 
 import scala.annotation.tailrec
 
@@ -22,12 +22,11 @@ object Chapter4ErrorHandling extends App {
           MySome(combined)
 
         case x::xs =>
-          val transformed = f(x)
-
-          if (transformed.isDefined)
-            combineOptions(xs, transformed.get::combined)
-          else
-            MyNone
+          // f(x).flatMap(transformedElement => combineOptions(xs, transformedElement::combined)) Not tail-recursive
+          f(x) match {
+            case MySome(transformed) => combineOptions(xs, transformed::combined)
+            case MyNone => MyNone
+          }
       }
 
       combineOptions(a, List.empty)
@@ -37,27 +36,27 @@ object Chapter4ErrorHandling extends App {
   sealed trait MyOption[+A] {
     def map[B] (f: A => B): MyOption[B] = this match {
       case MyNone => MyNone
-      case some: MySome[A] => MySome(f(some.get()))
+      case MySome(value) => MySome(f(value))
     }
 
     def flatMap[B] (f: A => MyOption[B]): MyOption[B] = this match {
       case MyNone => MyNone
-      case some: MySome[A] => f(some.get())
+      case MySome(value) => f(value)
     }
 
     def getOrElse[B >: A] (default: => B): B = this match {
       case MyNone => default
-      case some: MySome[A] => some.get()
+      case MySome(value) => value
     }
 
     def orElse[B >: A] (ob: => MyOption[B]): MyOption[B] = this match {
       case MyNone => ob
-      case some: MySome[A] => some
+      case some @ MySome(_) => some
     }
 
     def filter(f: A => Boolean): MyOption[A] = this match {
       case MyNone => MyNone
-      case some: MySome[A] => if (f(some.get())) some else MyNone
+      case some @ MySome(value) => if (f(value)) some else MyNone
     }
 
     def isDefined: Boolean = this match {

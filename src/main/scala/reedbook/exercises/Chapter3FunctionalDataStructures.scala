@@ -1,5 +1,6 @@
-package theRedBook.exercises
+package reedbook.exercises
 
+import scala.annotation.tailrec
 import scala.math.max
 
 object Chapter3FunctionalDataStructures {
@@ -43,6 +44,8 @@ object Chapter3FunctionalDataStructures {
     takeAllButLastElement(lst, List.empty)
   }
 
+  // got to exercise 3.7
+
   def lengthOfListUsingFoldRight[A](lst: List[A]): Int = {
     @scala.annotation.tailrec
     def computeLength(list: List[A], length: Int = 0): Int = list match {
@@ -65,11 +68,11 @@ object Chapter3FunctionalDataStructures {
 
   def foldLeft[A, B](as: List[A], z: B)(f: (B, A) => B): B = foldRight(as.reverse, z)(f)
 
-  def sumWithFoldLeft(list: List[Int]): Int = foldRight(list, 0)(_ + _)
+  def sumWithFold(list: List[Int]): Int = foldRight(list, 0)(_ + _)
 
-  def productWithFoldLeft(list: List[Int]): Int = foldRight(list, 1)(_ * _)
+  def productWithFold(list: List[Int]): Int = foldRight(list, 1)(_ * _)
 
-  def lengthWithFoldLeft[A](list: List[A]): Int = foldRight(list, 0)((size, _) => size + 1)
+  def lengthWithFold[A](list: List[A]): Int = foldRight(list, 0)((size, _) => size + 1)
 
   def appendListWithFold[A](fromList: List[A], toList: List[A]): List[A] = {
     foldRight(fromList.reverse, toList)((accList, newHead) => newHead::accList)
@@ -122,17 +125,15 @@ object Chapter3FunctionalDataStructures {
     combine(list1, list2, Nil)
   }
 
-  // generalization of the function above
-  def zipListsWith[A, B, C](list1: List[A], list2: List[B])(f: (A, B) => C): List[Any] = {
+  // generalization of the function above - lists need to have the same size to combine all A and B into C
+  def zipListsWith[A, B, C](list1: List[A], list2: List[B])(f: (A, B) => C): List[C] = {
     @scala.annotation.tailrec
-    def combine(lhs: List[A], rhs: List[B], resultingList: List[C]): List[Any] = (lhs, rhs) match {
-      case (Nil, _) =>
-        appendListWithFold(resultingList.reverse, rhs)
-      case (_, Nil) =>
-        appendListWithFold(resultingList.reverse, lhs)
-      case (x::xs, y::ys) =>
-        combine(xs, ys, f(x, y)::resultingList)
-    }
+    def combine(lhs: List[A], rhs: List[B], resultingList: List[C]): List[C] =
+      if (lhs.size != rhs.size) resultingList
+      else (lhs, rhs) match {
+        case (Nil, Nil) => resultingList
+        case (x::xs, y::ys) => combine(xs, ys, f(x, y)::resultingList)
+      }
 
     combine(list1, list2, Nil)
   }
@@ -144,12 +145,12 @@ object Chapter3FunctionalDataStructures {
   def treeSize[A](tree: Tree[A]): Int = {
     @scala.annotation.tailrec
     def countNodes(tree: Tree[A], count: Int, branchesToExplore: List[Tree[A]]): Int = tree match {
-      case _: Leaf[A]  =>
+      case Leaf(_)  =>
         if (branchesToExplore.isEmpty) count + 1
         else countNodes(branchesToExplore.head, count + 1, branchesToExplore.tail)
 
-      case branch: Branch[A] =>
-        countNodes(branch.left, count + 1, branch.right::branchesToExplore)
+      case Branch(left, right) =>
+        countNodes(left, count + 1, right::branchesToExplore)
     }
 
     countNodes(tree, count= 0, List.empty)
@@ -158,14 +159,14 @@ object Chapter3FunctionalDataStructures {
   def maximumElement(tree: Tree[Int]): Int = {
     @scala.annotation.tailrec
     def findMax(tree: Tree[Int], maximum: Int, branchesToExplore: List[Tree[Int]]): Int = tree match {
-      case leaf: Leaf[Int]  =>
-        val newMax = max(leaf.value, maximum)
+      case Leaf(value)  =>
+        val newMax = max(value, maximum)
 
         if (branchesToExplore.isEmpty) newMax
         else findMax(branchesToExplore.head, newMax, branchesToExplore.tail)
 
-      case branch: Branch[Int] =>
-          findMax(branch.left, maximum, branch.right::branchesToExplore)
+      case Branch(left, right) =>
+          findMax(left, maximum, right::branchesToExplore)
     }
 
     findMax(tree, Int.MinValue, List.empty)
@@ -174,23 +175,22 @@ object Chapter3FunctionalDataStructures {
   def depth[A](tree: Tree[A]): Int = {
     @scala.annotation.tailrec
     def findMaxDepth(t: Tree[A], currentDepth: Int, maxDepth: Int, branchesToExplore: List[Tree[A]]): Int = t match {
-      case _: Leaf[A] =>
+      case Leaf(_) =>
         max(currentDepth + 1, maxDepth)
-      case branch: Branch[A] =>
-        findMaxDepth(branch.left, currentDepth + 1, maxDepth, branch.right::branchesToExplore)
+      case Branch(left, right) =>
+        findMaxDepth(left, currentDepth + 1, maxDepth, right::branchesToExplore)
     }
 
     findMaxDepth(tree, currentDepth= 0, maxDepth= 0, List.empty)
   }
 
-  // would be great to make this tail recursive so it doesn't hit a Stack Overflow
-  def mapTree[A, B](tree: Tree[A])(f: A => B): Tree[B] = {
+  def mapTree[A, B](tree: Tree[A])(fn: A => B): Tree[B] = {
     def mapTree(t: Tree[A]): Tree[B] = t match {
-      case leaf: Leaf[A] =>
-        Leaf(f(leaf.value))
+      case Leaf(value) =>
+        Leaf(fn(value))
 
-      case branch: Branch[A] =>
-        Branch(mapTree(branch.left), mapTree(branch.right))
+      case Branch(left, right) =>
+        Branch(mapTree(left), mapTree(right))
     }
 
     mapTree(tree)

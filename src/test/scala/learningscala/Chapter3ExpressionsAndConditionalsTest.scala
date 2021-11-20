@@ -1,4 +1,4 @@
-package learningScalaOReilley
+package learningscala
 
 import Chapter3ExpressionsAndConditionals._
 import org.scalatest.{Matchers, WordSpec}

@@ -1,8 +1,8 @@
-package theRedBook.exercises
+package reedbook.exercises
 
 import java.math.BigInteger
 
-import theRedBook.exercises.Chapter2IntroToFP._
+import reedbook.exercises.Chapter2IntroToFP._
 
 import org.scalatest.{Matchers, WordSpec}
 
