@@ -2,7 +2,7 @@ package reedbook.exercises
 
 import java.math.BigInteger
 
-import reedbook.exercises.Chapter2IntroToFP._
+import reedbook.exercises.Chapter02IntroToFP._
 
 import org.scalatest.{Matchers, WordSpec}
 
@@ -85,7 +85,7 @@ class Chapter2IntroToFPTest extends WordSpec with Matchers {
     def formatOddCheck(isOdd: Boolean): String = s"the odd check is $isOdd"
 
     "tell if a number is odd using two functions (one for checking. one for formatting the result as string)" in {
-      val composedOddCheck = Chapter2IntroToFP.compose(isOdd, formatOddCheck)
+      val composedOddCheck = Chapter02IntroToFP.compose(isOdd, formatOddCheck)
 
       composedOddCheck(2) shouldBe "the odd check is false"
       composedOddCheck(-3) shouldBe "the odd check is true"

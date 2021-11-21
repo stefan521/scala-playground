@@ -1,10 +1,10 @@
 package reedbook.exercises
 
-import reedbook.exercises.Chapter5Laziness.Stream.{cons, empty}
+import reedbook.exercises.Chapter05Laziness.Stream.{cons, empty}
 
 import scala.annotation.tailrec
 
-object Chapter5Laziness extends App {
+object Chapter05Laziness extends App {
 
   sealed trait Stream[+A] {
 
@@ -110,6 +110,7 @@ object Chapter5Laziness extends App {
 
       doFibs(0, 1)
     }
+
 
     def unfold[A, S](state: S)(f: S => Option[(A, S)]): Stream[A] =
       f(state) match {

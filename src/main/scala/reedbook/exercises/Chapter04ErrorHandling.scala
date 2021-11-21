@@ -2,7 +2,7 @@ package reedbook.exercises
 
 import scala.annotation.tailrec
 
-object Chapter4ErrorHandling extends App {
+object Chapter04ErrorHandling extends App {
 
   object MyOption {
     def map2[A, B, C] (a: MyOption[A], b: MyOption[B])(f: (A, B) => C): MyOption[C] =

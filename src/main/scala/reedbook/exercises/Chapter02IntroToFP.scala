@@ -1,6 +1,6 @@
 package reedbook.exercises
 
-object Chapter2IntroToFP extends App {
+object Chapter02IntroToFP extends App {
   /**
    *
    * @param n The position in the Fibonacci sequence 0-based.

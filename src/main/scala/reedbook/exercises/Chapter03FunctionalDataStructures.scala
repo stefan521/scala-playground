@@ -3,7 +3,7 @@ package reedbook.exercises
 import scala.annotation.tailrec
 import scala.math.max
 
-object Chapter3FunctionalDataStructures {
+object Chapter03FunctionalDataStructures {
   def tail[A](lst: List[A]): List[A] = lst match {
     case Nil => Nil
     case _::xs => xs

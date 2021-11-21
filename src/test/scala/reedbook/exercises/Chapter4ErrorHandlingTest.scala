@@ -1,7 +1,7 @@
 package reedbook.exercises
 
 import org.scalatest.{FunSpec, Matchers}
-import Chapter4ErrorHandling._
+import Chapter04ErrorHandling._
 
 class Chapter4ErrorHandlingTest extends FunSpec with Matchers {
   describe("Option") {

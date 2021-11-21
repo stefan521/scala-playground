@@ -1,7 +1,7 @@
 package reedbook.exercises
 
 import org.scalatest.{Matchers, WordSpec}
-import Chapter3FunctionalDataStructures._
+import Chapter03FunctionalDataStructures._
 
 object Chapter3FunctionalDataStructuresTest {
   val leafTree: Tree[Int] = Leaf(5)
