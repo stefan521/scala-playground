@@ -94,8 +94,6 @@ object RNG {
 
   def randomIntsWithSequence(count: Int): Rand[List[Int]] =
     sequence(List.fill(count)(int))
-
-  // got to 6.8
 }
 
 object Chapter6FunctionalState extends App {

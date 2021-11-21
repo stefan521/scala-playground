@@ -1,35 +1,55 @@
 package reedbook.exercises
 
-import scala.concurrent.duration.TimeUnit
-import java.util.concurrent._
+import java.util.concurrent.{ExecutorService, TimeUnit, Future => Jfuture, Callable}
 
-import language.implicitConversions
+private case class UnitFuture[A](get: A) extends Jfuture[A] {
 
+  override def cancel(mayInterruptIfRunning: Boolean): Boolean = false
+
+  override def isCancelled: Boolean = false
+
+  override def isDone: Boolean = true
+
+  override def get(timeout: Long, unit: TimeUnit): A = get
+}
 
 object Par {
-  type Par[A] = ExecutorService => Future[A]
 
-  def run[A](s: ExecutorService)(a: Par[A]): Future[A] = a(s)
+  type Par[A] = ExecutorService => Jfuture[A]
 
-  def unit[A](a: A): Par[A] = (_: ExecutorService) => UnitFuture(a)
+  def unit[A](a: A): Par[A] = _ => UnitFuture(a)
 
-  def lazyUnit[A](a: => A): Par[A] = fork(unit(a))
+  def map[A,B](pa: Par[A])(f: A => B): Par[B] = map2(pa, unit(()))((a,_) => f(a))
 
-  private case class UnitFuture[A](get: A) extends Future[A] {
-    def isDone = true
+  def map2[A, B, C](parA: Par[A], parB: Par[B])(fn: (A, B) => C): Par[C] =
+    es => new Jfuture[C] {
+      private val futureA = parA(es)
+      private val futureB = parB(es)
+      @volatile private var cache: Option[C] = None
 
-    def get(timeout: Long, units: TimeUnit): A = get
+      override def cancel(mayInterruptIfRunning: Boolean): Boolean = {
+        val cancelledA = futureA.cancel(mayInterruptIfRunning)
+        val cancelledB = futureB.cancel(mayInterruptIfRunning)
+        cancelledA && cancelledB
+      }
 
-    def isCancelled = false
+      override def isCancelled: Boolean = futureA.isCancelled || futureB.isCancelled
 
-    def cancel(evenIfRunning: Boolean): Boolean = false
-  }
+      override def isDone: Boolean = futureA.isDone && futureB.isDone
 
-  def map2[A, B, C](a: Par[A], b: Par[B])(f: (A, B) => C): Par[C] =
-    (es: ExecutorService) => {
-      val af = a(es)
-      val bf = b(es)
-      UnitFuture(f(af.get, bf.get))
+      override def get(): C = fn(futureA.get, futureB.get)
+
+      override def get(timeout: Long, unit: TimeUnit): C =
+        cache.getOrElse {
+          val timeoutNanos = TimeUnit.NANOSECONDS.convert(timeout, unit)
+          val started = System.nanoTime
+          val a = futureA.get(timeoutNanos, TimeUnit.NANOSECONDS)
+          val elapsed = System.nanoTime - started
+          val b = futureB.get(timeoutNanos - elapsed, TimeUnit.NANOSECONDS)
+          val c = fn(a, b)
+          cache = Some(c)
+          c
+        }
     }
 
   def fork[A](a: => Par[A]): Par[A] =
@@ -37,11 +57,21 @@ object Par {
       def call: A = a(es).get
     })
 
-  def asyncF[A,B](f: A => B): A => Par[B] = (aVal: A) => lazyUnit(f(aVal))
+  def lazyUnit[A](a: => A): Par[A] = fork(unit(a))
 
-  def sortPar(parList: Par[List[Int]]): Par[List[Int]] = map(parList)(_.sorted)
+  def asyncF[A, B](fn: A => B): A => Par[B] = arg => lazyUnit(fn(arg))
 
-  def map[A,B](pa: Par[A])(f: A => B): Par[B] = map2(pa, unit(()))((a, _) => f(a))
+  def sequence[A](ps: List[Par[A]]): Par[List[A]] =
+    es => unit(
+      ps.foldLeft(List.empty[A]) { case (acc, parEl) => parEl(es).get :: acc }
+    )(es)
+
+  def parMap[A, B](ps: List[A])(f: A => B): Par[List[B]] = fork {
+    val fbs: List[Par[B]] = ps.map(asyncF(f))
+    sequence(fbs)
+  }
+
+  def run[A](s: ExecutorService)(a: Par[A]): Jfuture[A] = a(s)
 }
 
 object Chapter7Parallelism extends App {
