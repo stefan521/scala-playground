@@ -8,3 +8,9 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.8" % "test"
 libraryDependencies += "joda-time" % "joda-time" % "2.10.8"
 libraryDependencies += "com.github.nscala-time" %% "nscala-time" % "2.26.0"
 libraryDependencies += "io.monix" %% "monix" % "3.4.0"
+libraryDependencies += "org.typelevel" %% "cats-core" % "2.1.0"
+
+scalacOptions ++= Seq(
+  "-Xfatal-warnings"
+)
+
