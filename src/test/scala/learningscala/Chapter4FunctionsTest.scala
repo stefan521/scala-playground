@@ -1,14 +1,15 @@
 package learningscala
 
 import Chapter4Functions._
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
 import scala.util.Random
 
 object Chapter4FunctionsTest {
   val randomGenerator = new Random
 }
-class Chapter4FunctionsTest extends WordSpec with Matchers {
+class Chapter4FunctionsTest extends AnyWordSpec with Matchers {
   "computeCircleArea" should {
     "return the circle area given a circle radius" in {
       computeCircleArea(0) shouldBe 0
@@ -19,8 +20,8 @@ class Chapter4FunctionsTest extends WordSpec with Matchers {
 
   "parseComputeCircleArea" should {
     import Chapter4FunctionsTest.randomGenerator
-    val aRandomDouble = randomGenerator.nextDouble
-    val theRandomArea = randomGenerator.nextDouble
+    val aRandomDouble = randomGenerator.nextDouble()
+    val theRandomArea = randomGenerator.nextDouble()
     val mockAreaFunction = (_: Double) => theRandomArea
 
     "return None for empty string" in {
@@ -46,7 +47,7 @@ class Chapter4FunctionsTest extends WordSpec with Matchers {
 
     "return 1 when raising something to power of 0" in {
       import Chapter4FunctionsTest.randomGenerator
-      power(randomGenerator.nextInt, 0) shouldBe 1
+      power(randomGenerator.nextInt(), 0) shouldBe 1
     }
 
     "handle negative numbers" in {

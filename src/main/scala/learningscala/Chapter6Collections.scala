@@ -40,11 +40,12 @@ object Chapter6Collections {
 
   def findPalindromesWithRecursion(lst: List[String]): (List[String], List[String]) = {
     @scala.annotation.tailrec
-    def doPartition(lst: List[String], palindromes: List[String], notPalindromes: List[String]): (List[String], List[String]) = lst match {
-      case Nil => (palindromes.reverse, notPalindromes.reverse)
+    def doPartition(lst: List[String], palindromes: List[String], notPalindromes: List[String]): (List[String], List[String]) =
+      lst match {
       case x::xs if isPalindrome(x) => doPartition(xs, x::palindromes, notPalindromes)
       case x::xs if !isPalindrome(x) => doPartition(xs, palindromes, x::notPalindromes)
-    }
+      case _ => (palindromes.reverse, notPalindromes.reverse)
+      }
 
     doPartition(lst, Nil, Nil)
   }

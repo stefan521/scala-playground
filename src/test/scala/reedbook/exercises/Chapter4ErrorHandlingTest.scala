@@ -1,9 +1,10 @@
 package reedbook.exercises
 
-import org.scalatest.{FunSpec, Matchers}
 import Chapter04ErrorHandling._
+import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 
-class Chapter4ErrorHandlingTest extends FunSpec with Matchers {
+class Chapter4ErrorHandlingTest extends AnyFunSpec with Matchers {
   describe("Option") {
     describe("when None") {
       it("map should return None") {

@@ -14,4 +14,8 @@ I use IntelliJ as my IDE. The project is built with sbt. If you don't like Intel
 
 Just be aware these commands can have a very verbose output. `sbt run` will just print Hello World. `sbt test` will run all automated tests for the functions I've written. 
 
+Ran with:
+sbt version 1.6.2
+Java Version openjdk 11.0.15 2022-04-19 LTS
+
 Thanks for reading this. :)

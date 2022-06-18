@@ -3,7 +3,7 @@ package learningscala
 object Chapter2WorkingWithData {
   def payMeBack(amount: Double): String = {
       if(amount <= 0) "You don't owe me anything."
-      else s"You owe me $$${amount}"
+      else s"You owe me $$$amount"
   }
 
   /**
@@ -15,7 +15,7 @@ object Chapter2WorkingWithData {
    * @return Frank's phone number
    */
   def callFrank(franksAddress: String): String = {
-    val pattern = """[\w ]* *, *[\w ]* *, *([\d-]+) *, *[\w]*""".r
+    val pattern = """[\w ]* *, *[\w ]* *, *([\d-]+) *, *\w*""".r
     val pattern(phone) = franksAddress
 
     phone

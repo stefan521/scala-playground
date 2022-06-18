@@ -1,9 +1,10 @@
 package learningscala
 
 import Chapter3ExpressionsAndConditionals._
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class Chapter3ExpressionsAndConditionalsTest extends WordSpec with Matchers {
+class Chapter3ExpressionsAndConditionalsTest extends AnyWordSpec with Matchers {
   "checkName" should {
     "approve valid names" in {
       checkName("Peter") shouldBe "Peter"

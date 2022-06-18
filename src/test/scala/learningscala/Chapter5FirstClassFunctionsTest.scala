@@ -1,9 +1,10 @@
 package learningscala
 
 import Chapter5FirstClassFunctions._
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
-class Chapter5FirstClassFunctionsTest extends WordSpec with Matchers {
+class Chapter5FirstClassFunctionsTest extends AnyWordSpec with Matchers {
   "maxInt" should {
     "return the greater Int between the two" in {
       maxInt(-12, 32) shouldBe 32

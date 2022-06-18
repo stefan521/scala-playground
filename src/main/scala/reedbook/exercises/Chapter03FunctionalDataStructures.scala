@@ -130,9 +130,10 @@ object Chapter03FunctionalDataStructures {
     @scala.annotation.tailrec
     def combine(lhs: List[A], rhs: List[B], resultingList: List[C]): List[C] =
       if (lhs.size != rhs.size) resultingList
-      else (lhs, rhs) match {
-        case (Nil, Nil) => resultingList
-        case (x::xs, y::ys) => combine(xs, ys, f(x, y)::resultingList)
+      else
+        (lhs, rhs) match {
+          case (x::xs, y::ys) => combine(xs, ys, f(x, y)::resultingList)
+          case _ => resultingList.reverse
       }
 
     combine(list1, list2, Nil)

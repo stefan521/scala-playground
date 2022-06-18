@@ -1,9 +1,10 @@
 package learningscala
 import Chapter2WorkingWithData._
 import org.scalactic.{Equality, TolerantNumerics}
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class Chapter2WorkingWithDataTest extends FlatSpec with Matchers {
+class Chapter2WorkingWithDataTest extends AnyFlatSpec with Matchers {
   implicit val doubleEquality: Equality[Double] = TolerantNumerics.tolerantDoubleEquality(0.001)
 
   it should "formats a string with the given value" in {

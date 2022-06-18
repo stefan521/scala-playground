@@ -1,7 +1,8 @@
 package learningscala
 
 import Chapter6Collections._
-import org.scalatest.{Matchers, WordSpec}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
 object Chapter6CollectionsTest {
   case class PalindromesInListTest(
@@ -9,7 +10,7 @@ object Chapter6CollectionsTest {
     expectedResult: (List[String], List[String])
   )
 
-  val palindromesTestsCases = List(
+  val palindromesTestsCases: Seq[PalindromesInListTest] = List(
     PalindromesInListTest(
       inputList = List("abc", "vpn"),
       expectedResult = (Nil, List("abc", "vpn"))
@@ -29,7 +30,7 @@ object Chapter6CollectionsTest {
   )
 }
 
-class Chapter6CollectionsTest extends WordSpec with Matchers {
+class Chapter6CollectionsTest extends AnyWordSpec with Matchers {
   "generateFirstOdds" should {
     "return the first positive odd number" in {
       generateFirstOdds(1) shouldBe List(1)

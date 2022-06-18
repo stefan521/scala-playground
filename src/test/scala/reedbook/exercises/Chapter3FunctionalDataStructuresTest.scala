@@ -1,7 +1,8 @@
 package reedbook.exercises
 
-import org.scalatest.{Matchers, WordSpec}
 import Chapter03FunctionalDataStructures._
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
 object Chapter3FunctionalDataStructuresTest {
   val leafTree: Tree[Int] = Leaf(5)
@@ -28,7 +29,7 @@ object Chapter3FunctionalDataStructuresTest {
     )
   )
 }
-class Chapter3FunctionalDataStructuresTest extends WordSpec with Matchers {
+class Chapter3FunctionalDataStructuresTest extends AnyWordSpec with Matchers {
   import Chapter3FunctionalDataStructuresTest._
 
   "appendListWithFold" should {
@@ -72,23 +73,11 @@ class Chapter3FunctionalDataStructuresTest extends WordSpec with Matchers {
         "3-branch"
       )
 
-      zipListsWith(List(1, 2, 3), List[String]())((a, b) => s"$a-$b") shouldBe List(
-        1,
-        2,
-        3
-      )
+      zipListsWith(List(1, 2, 3), List[String]())((a, b) => s"$a-$b") shouldBe empty
 
-      zipListsWith(List[Int](), List("tree", "leaf", "branch"))((a, b) => s"$a-$b") shouldBe List(
-        "tree",
-        "leaf",
-        "branch"
-      )
+      zipListsWith(List[Int](), List("tree", "leaf", "branch"))((a, b) => s"$a-$b") shouldBe empty
 
-      zipListsWith(List(1, 2), List("tree", "leaf", "branch"))((a, b) => s"$a-$b") shouldBe List(
-        "1-tree",
-        "2-leaf",
-        "branch"
-      )
+      zipListsWith(List(1, 2), List("tree", "leaf", "branch"))((a, b) => s"$a-$b") shouldBe empty
     }
   }
 

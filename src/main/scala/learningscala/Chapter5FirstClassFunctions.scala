@@ -9,7 +9,7 @@ object Chapter5FirstClassFunctions {
   }
 
   def applyToRandoms(f: (Int, Int) => Int): Int = {
-    f(util.Random.nextInt, util.Random.nextInt)
+    f(util.Random.nextInt(), util.Random.nextInt())
   }
 
   def getMaxes(givenInts: (Int, Int)): (Int, Int) = {

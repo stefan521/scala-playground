@@ -1,9 +1,10 @@
 package learningscala
 import Chapter1GettingStarted._
 import org.scalactic.{Equality, TolerantNumerics}
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
-class Chapter1GettingStartedTest extends FlatSpec with Matchers {
+class Chapter1GettingStartedTest extends AnyFlatSpec with Matchers {
   implicit val doubleEquality: Equality[Double] = TolerantNumerics.tolerantDoubleEquality(0.001)
 
   it should "convert Celsius to Fahrenheit" in {

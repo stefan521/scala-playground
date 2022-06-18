@@ -8,9 +8,7 @@
     <option name="deprecationWarnings" value="true" />
     <profile name="sbt 1" modules="LearningScala,learningscala,scala-playground" />
     <profile name="sbt 2" modules="scala-exercises">
-      <parameters>
-        <parameter value="-Xfatal-warnings" />
-      </parameters>
+      <option name="deprecationWarnings" value="true" />
     </profile>
   </component>
 </project>

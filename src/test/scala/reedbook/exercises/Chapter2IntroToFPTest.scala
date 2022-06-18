@@ -1,12 +1,12 @@
 package reedbook.exercises
 
-import java.math.BigInteger
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
+import java.math.BigInteger
 import reedbook.exercises.Chapter02IntroToFP._
 
-import org.scalatest.{Matchers, WordSpec}
-
-class Chapter2IntroToFPTest extends WordSpec with Matchers {
+class Chapter2IntroToFPTest extends AnyWordSpec with Matchers {
   "findNthFibonacci" should {
     "find the n-th number in the Fibonacci sequence" in {
       findNthFibonacci(0) shouldBe Some(0)
