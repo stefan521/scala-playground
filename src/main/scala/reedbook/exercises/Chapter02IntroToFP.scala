@@ -50,7 +50,7 @@ object Chapter02IntroToFP extends App {
    * @return the curried function f
    */
   def curry[A, B, C](f: (A, B) => C): A => B => C = {
-    a: A => b: B => f(a, b)
+    (a: A) => (b: B) => f(a, b)
   }
 
   /**
@@ -75,6 +75,6 @@ object Chapter02IntroToFP extends App {
    * @return The result of applying g and then f on an argument of type A
    */
   def compose[A, B, C](g: A => B, f: B => C): A => C = {
-    a: A => f(g(a))
+    (a: A) => f(g(a))
   }
 }

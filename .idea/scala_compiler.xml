@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ScalaCompilerConfiguration">
-    <option name="postfixOps" value="true" />
-    <option name="implicitConversions" value="true" />
-    <option name="existentials" value="true" />
-    <option name="experimental" value="true" />
-    <option name="deprecationWarnings" value="true" />
-    <profile name="sbt 1" modules="LearningScala,learningscala,scala-playground" />
+    <profile name="sbt 1" modules="scala-playground_353" />
     <profile name="sbt 2" modules="scala-exercises">
       <option name="deprecationWarnings" value="true" />
+      <parameters>
+        <parameter value="-Xfatal-warnings" />
+      </parameters>
     </profile>
   </component>
 </project>
